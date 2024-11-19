@@ -30,3 +30,8 @@ jobs: # C'est pour dire les différentes étapes du workflow
           context: . # c'est pour dire qu'on utilise le répertoire courant
           push: true # c'est pour dire qu'on veut publier le conteneur
           tags: ghcr.io/luffy0xcyber/ue19-lab-05/my-app:latest # c'est pour dire qu'on veut taguer le conteneur avec ce nom
+
+      - name: Scanner l'image Docker pour les vulnerabilites # c'est le nom de l'étape
+        uses: aquasecurity/trivy-action@master # c'est pour dire qu'on utilise l'action "trivy" pour scanner l'image Docker
+        with:
+          image-ref: ghcr.io/luffy0xcyber/ue19-lab-05/my-app:latest # c'est pour dire qu'on scanne l'image Docker taguée
