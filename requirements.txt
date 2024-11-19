@@ -1,0 +1,3 @@
+# Cette ligne indique que le programme a besoin de la bibliothèque requests en version 2.32.3
+# pour fonctionner
+requests==2.32.3
