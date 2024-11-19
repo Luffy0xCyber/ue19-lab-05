@@ -1,13 +1,13 @@
-FROM python:3.11-slim
+FROM python:3.13.0
 
-WORKDIR /app
+# Définir le répertoire de travail
+WORKDIR /usr/src/app
 
-COPY requirements.txt .
+# Copier les fichiers nécessaires
+COPY app.py requirements.txt ./
 
+# Installer les dépendances
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
-
-EXPOSE 80
-
+# Commande par défaut pour exécuter le script
 CMD ["python", "app.py"]
