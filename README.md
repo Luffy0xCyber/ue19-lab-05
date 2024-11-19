@@ -2,11 +2,7 @@
 # Application d'Information sur les Personnes les Plus Recherchées par le FBI
 [![Build Status](https://cdn.prod.website-files.com/5e0f1144930a8bc8aace526c/65dd9eb5aaca434fac4f1c7c_Build-Passing-brightgreen.svg)](https://github.com/Luffy0xCyber/ue19-lab-05/actions)
 [![License](https://img.shields.io/badge/License-Unlicensed-blue.svg)](https://github.com/Luffy0xCyber/ue19-lab-05/blob/main/LICENSE)
-[![GitHub last commit](https://img.shields.io/github/last-commit/Luffy0xCyber/ue19-lab-05)]()
-[![GitHub pull requests](https://img.shields.io/github/issues-pr/Luffy0xCyber/ue19-lab-05)]()
-[![GitHub watchers](https://img.shields.io/github/watchers/Luffy0xCyber/ue19-lab-05)]()
-[![GitHub contributors](https://img.shields.io/github/contributors/Luffy0xCyber/ue19-lab-05)]()
-[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Luffy0xCyber/ue19-lab-05)]()
+
 
 ## Description du Projet
 
