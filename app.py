@@ -1,62 +1,33 @@
+# On importe la bibliothèque qui nous permet de faire des requêtes web
 import requests
 
-# URL de l'API pour avoir les informations sur les personnes "most wanted" du programme FBI
-# cf. documentation du FBI => https://www.fbi.gov/wanted/api
-API_URL = 'https://api.fbi.gov/wanted/v1/list'
+# On définit l'adresse web où on va chercher des livres sur la cybersécurité
+url = "https://openlibrary.org/search.json?q=cybersecurity"
 
-# try:
+response = requests.get(url)
 
-# Variable response qui va recevoir un code
-response = requests.get(API_URL)
-
-# Si le code est 200 alors la requête est réussi
+# Si le site répond correctement (code 200 = "tout va bien")
 if response.status_code == 200:
-    # Convertir les données en json()
-    donnee = response.json()
-    # le print en commentaire ci-dessous m'a aidé à comprendre la structure et comment c'est organisé
-    # print(donnee)
+    # On récupère la liste des livres trouvés
+    books = response.json().get("docs", [])
 
-    # Afficher le nombre total de personnes
-    print(f"Nombre total de personnes recherchées : {donnee['total']}\n")
+    # On va maintenant trier ces livres du plus ancien au plus récent
+    sorted_books = sorted(books, key=lambda x: x.get("first_publish_year", float("inf")))
 
-    # Parcourir les 10 premières personnes, vous pouvez changer le nombre de personnes à afficher.
-    # Attention que ce nombre ne doit pas excéder le nombre total des personnes recherché (cf. print jsute au-dessus)
-    for person in donnee['items'][:10]:
-        print("*" * 50)  # Ligne de séparation pour mieux visualiser
+    # On va afficher les détails des 10 premiers livres triés
+    for book in sorted_books[:10]:
+        # On récupère le titre, mais si on ne le trouve pas, on met "Titre inconnu"
+        title = book.get("title", "Titre inconnu")
 
-        # Informations de base à savoir le nom complet, Sexe et la Race
-        print(f"Nom Complet: {person.get('title', 'Non spécifié')}")
-        print(f"Sexe: {person.get('sex', 'Non spécifié')}")
-        print(f"Race: {person.get('race', 'Non spécifiée')}")
+        # Pareil pour l'auteur : si plusieurs auteurs, on les sépare par une virgule
+        # Si pas d'auteur, on met "Auteur inconnu"
+        author = ", ".join(book.get("author_name", ["Auteur inconnu"]))
 
-        # C les informations concenrnant les cheveux, Yeux et la taille
-        print("\nCaractéristiques physiques:")
-        print(f"Cheveux: {person.get('hair', 'Non spécifié')}")
-        print(f"Yeux: {person.get('eyes', 'Non spécifié')}")
-        # Attention qu'ici la taille est en inches (utilisée aux États-Unis)
-        if 'height_min' in person and 'height_max' in person:
-            print(f"Taille: {person['height_min']} - {person['height_max']}")
+        # On récupère l'année de publication ou on met "Année inconnue"
+        year = book.get("first_publish_year", "Année inconnue")
 
-        # Une récompense si c disponible
-        if 'reward_text' in person and person['reward_text']:
-            print(f"\nRécompense: {person['reward_text']}")
-
-        # Une Description si c disponible
-        if 'description' in person and person['description']:
-            print("\nDescription:")
-            print(person['description'])
-
-        # Avertissement si c disponible
-        if 'warning_message' in person and person['warning_message']:
-            print("\nAVERTISSEMENT:")
-            print(person['warning_message'])
-
-        print("\n")  # Ligne vide pour aider pour la lisibilité
-
-# # tous les excepts c'est pour les cas d'erreurs !
-# except requests.exceptions.RequestException as e:
-#     print(f"Erreur lors de la requête : {e}")
-# except KeyError as e:
-#     print(f"Erreur dans la structure des données : {e}")
-# except Exception as e:
-#     print(f"Une erreur inconnue s'est produite : {e}")
+        # On affiche joliment les informations de chaque livre
+        print(f"Titre : {title}\nAuteur(s) : {author}\nAnnée de publication : {year}\n")
+else:
+    # Si le site web ne répond pas correctement, on affiche le code d'erreur
+    print(f"Erreur : {response.status_code}")
