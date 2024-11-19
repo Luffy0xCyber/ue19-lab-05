@@ -4,7 +4,7 @@ name: Construire le conteneur et le publier sur le registre GitHub Packages
 on: # c'est quand est-ce que le workflow doit être déclenché
   push: # Cela veut dire le workflow doit être déclenché à chaque fois qu'on push sur la branche main
     branches: # C'est pour dire sur quelle branche le workflow doit être déclenché
-      - main # ici dans mon cas, c'est la branch main, ça peut être branches master...
+      - main # ici dans mon cas, c'est la branch main, ça peut être branches master ou autre branche
 
 jobs: # C'est pour dire les différentes étapes du workflow
   build: # c'est le nom de l'étape
