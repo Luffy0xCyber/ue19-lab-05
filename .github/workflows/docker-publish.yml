@@ -22,14 +22,11 @@ jobs:
       # Étape 2 : Configurer Docker Metadata pour générer des tags
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: |
-            ghcr.io/${{ github.repository_owner }}/${{ github.repository }}
+        uses: docker/metadata-action@v5  # Met à jour à v5
 
       # Étape 3 : Configurer l'authentification pour GitHub Container Registry
       - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3  # Met à jour à v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -39,7 +36,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./ue19-lab-05/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
