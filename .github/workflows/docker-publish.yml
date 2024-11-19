@@ -1,4 +1,4 @@
-# Nom du workflow, ici j'ai mis le nom en fonction de ce qu'on a au labo à la Q3(plus facile de se retrouver)
+# Nom du workflow, ici j'ai mis le nom en fonction de ce qu'on a au labo à la question3
 name: Construire le conteneur et le publier sur le registre GitHub Packages
 
 # Déclencheur du workflow, ici on veut que le workflow soit déclenché à chaque fois qu'on push sur la branche main
