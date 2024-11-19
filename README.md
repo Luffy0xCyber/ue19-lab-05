@@ -41,6 +41,8 @@ Une fois l'application en cours d'exécution, elle récupérera et affichera des
 - Titre
 - Auteur(s)
 - Année de publication
+- Éditeur(s)
+- Sujets
 
 L'application affichera les détails des 10 premiers livres trouvés.
 
