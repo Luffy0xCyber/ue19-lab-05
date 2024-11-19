@@ -1,14 +1,13 @@
 FROM python:3.13.0
 
-RUN useradd -m -s /bin/bash user
-USER user
+# Définir le répertoire de travail
+WORKDIR /usr/src/app
 
-WORKDIR /home/user/src/app
+# Copier les fichiers nécessaires
+COPY app.py requirements.txt ./
 
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-RUN rm requirements.txt
+# Installer les dépendances
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY src .
-
-ENTRYPOINT ["python", "app.py"]
+# Commande par défaut pour exécuter le script
+CMD ["python", "app.py"]
