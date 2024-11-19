@@ -11,8 +11,9 @@ Cette application Python récupère et affiche des informations sur les livres l
 1. [Description du Projet](#description-du-projet)
 2. [Comment Installer et Exécuter le Projet](#comment-installer-et-exécuter-le-projet)
 3. [Comment Utiliser le Projet](#comment-utiliser-le-projet)
-4. [Crédits](#crédits)
-5. [Licence](#licence)
+4. [Déploiement sur Digital Ocean](#déploiement-sur-digital-ocean)
+5. [Crédits](#crédits)
+6. [Licence](#licence)
 
 ## Comment Installer et Exécuter le Projet
 
@@ -45,6 +46,10 @@ Une fois l'application en cours d'exécution, elle récupérera et affichera des
 - Sujets
 
 L'application affichera les détails des 10 premiers livres trouvés.
+
+## Déploiement sur Digital Ocean
+
+Ce projet a été testé sur un droplet Digital Ocean et a fonctionné en utilisant les commandes Docker mentionnées ci-dessus.
 
 ## Crédits
 
