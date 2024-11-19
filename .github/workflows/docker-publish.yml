@@ -1,35 +1,32 @@
-name: Build and Push Docker Image
+# Nom du workflow, ici j'ai mis le nom en fonction de ce qu'on a au labo à la Q3
+name: Construire le conteneur et le publier sur le registre GitHub Packages
 
-on:
-  push:
-    branches:
-      - main
+on: # c'est quand est-ce que le workflow doit être déclenché
+  push: # Cela veut dire le workflow doit être déclenché à chaque fois qu'on push sur la branche main
+    branches: # C'est pour dire sur quelle branche le workflow doit être déclenché
+      - main # ici dans mon cas, c'est la branch main, ça peut être branches master...
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+jobs: # C'est pour dire les différentes étapes du workflow
+  build: # c'est le nom de l'étape
+    runs-on: ubuntu-latest # runs-on c'est pour dire sur quelle machine le workflow doit être exécuté
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-#        Je le mets en commentaire. Qemu sert à émuler des architectures
-#         différentes de celle de la machine hôte. Je n'ai pas besoin de ça dans mon projet.
-#      - name: Set up QEMU
-#        uses: docker/setup-qemu-action@v3
+    steps: #  c'est pour dire les différentes étapes de l'étape
+      - name: Checkout code #  c'est le nom de l'étape
+        uses: actions/checkout@v3 #  c'est pour dire qu'on utilise l'action "checkout" pour récupérer le code
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Configurer Docker Buildx #  c'est le nom de l'étape
+        uses: docker/setup-buildx-action@v3 #  c'est pour dire qu'on utilise l'action "setup-buildx" pour configurer Docker Buildx
 
-      - name: Log in to GitHub Docker Registry
-        uses: docker/login-action@v3
+      - name: Se connecter au GitHub Docker Registry # c'est le nom de l'étape
+        uses: docker/login-action@v3 # c'est pour dire qu'on utilise l'action "login" pour se connecter au registre GitHub Packages
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.SECRET_TOKEN }}
+          registry: ghcr.io # c'est pour dire qu'on se connecte au registre GitHub Packages
+          username: ${{ github.actor }} # c'est pour dire qu'on utilise le nom de l'utilisateur GitHub qui a déclenché le workflow
+          password: ${{ secrets.SECRET_TOKEN }} # c'est pour dire qu'on utilise le token secret pour se connecter au registre GitHub Packages
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+      - name: Construire le conteneur et le publier sur le registre GitHub Packages # c'est le nom de l'étape
+        uses: docker/build-push-action@v5 # c'est pour dire qu'on utilise l'action "build-push" pour construire le conteneur et le publier sur le registre GitHub Packages
         with:
-          context: .
-          push: true
-          tags: ghcr.io/luffy0xcyber/ue19-lab-05/my-app:latest
+          context: . # c'est pour dire qu'on utilise le répertoire courant
+          push: true # c'est pour dire qu'on veut publier le conteneur
+          tags: ghcr.io/luffy0xcyber/ue19-lab-05/my-app:latest # c'est pour dire qu'on veut taguer le conteneur avec ce nom
