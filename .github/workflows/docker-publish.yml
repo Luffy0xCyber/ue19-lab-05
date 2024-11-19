@@ -15,24 +15,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Étape 1 : Récupérer le code source du repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Étape 2 : Configurer Docker Metadata pour générer des tags
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            ghcr.io/${{ github.repository_owner }}/${{ github.repository }}
+
+      # Étape 3 : Configurer l'authentification pour GitHub Container Registry
       - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
+      # Étape 4 : Construire et publier l'image Docker
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: |
-            ghcr.io/${{ github.repository_owner }}/ue19-lab-05:latest
-            ghcr.io/${{ github.repository_owner }}/ue19-lab-05:${{ github.sha }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
