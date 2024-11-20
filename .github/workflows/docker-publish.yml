@@ -1,12 +1,3 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-# GitHub recommends pinning actions to a commit SHA.
-# To get a newer version, you will need to update the SHA.
-# You can also reference a tag or branch, but the action may change without warning.
-
 # Nom du workflow, ici j'ai mis le nom en fonction de ce qu'on a au labo à la question3
 name: Construire le conteneur et le publier sur le registre GitHub Packages
 
@@ -18,6 +9,7 @@ on:
 
 jobs:
   push_to_registries:
+    # Environnement d'exécution : machine virtuelle Linux
     name : Construire et publier une image Docker
     runs-on: ubuntu-latest
 
@@ -26,7 +18,6 @@ jobs:
       packages: write
       actions: read
       id-token: write
-
     steps:
       # Étape 1 : Récupère le code source du dépôt
       - name: Checkout code
@@ -34,10 +25,7 @@ jobs:
 
       # Étape 2 : Configure Docker Buildx pour des fonctionnalités avancées de build
       - name: Configurer Docker Buildx
-        uses: docker/setup-buildx-action@v2
-        with:
-          driver-opts: | 
-            image=moby/buildkit:v0.10.6
+        uses: docker/setup-buildx-action@v3
 
       # Étape 3 : Connexion à GitHub Container Registry (GHCR)
       - name: Log in to Docker Hub
@@ -53,13 +41,7 @@ jobs:
         with:
           context: . # Utilise le répertoire courant pour construire l'image
           push: true
-          tags: ghcr.io/luffy0xcyber/ue19-lab-05/my-app:latest
-
-      # Étape 5 : Scanner l'image Docker pour les vulnerabilites
-      - name: Scanne image Docker avec Aqua Trivi
-        uses: aquasecurity/trivy-action@master # On utilise l'action "trivy" pour scanner l'image Docker
-        with:
-          image-ref: ghcr.io/luffy0xcyber/ue19-lab-05/my-app:latest
+          tags: ghcr.io/luffy0xcyber/ue19-lab-05 # identifiant de l'image Docker taguée
 
 
 
