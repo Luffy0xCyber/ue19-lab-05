@@ -1,20 +1,28 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# GitHub recommends pinning actions to a commit SHA.
+# To get a newer version, you will need to update the SHA.
+# You can also reference a tag or branch, but the action may change without warning.
+
 # Nom du workflow, ici j'ai mis le nom en fonction de ce qu'on a au labo à la question3
 name: Construire le conteneur et le publier sur le registre GitHub Packages
 
-# Déclencheur du workflow, ici on veut que le workflow soit déclenché à chaque fois qu'on push sur la branche main
+# Déclencheur du workflow
 on:
   push:
     branches:
-      - main
+      - main # Dès qu'on push sur le main
 
-# Les jobs du workflow, ici on a un job qui s'appelle "build"
 jobs:
-  build:
-    # Environnement d'exécution : machine virtuelle Linux
+  push_to_registries:
+    name : Construire et publier une image Docker
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write
+      contents: read
       packages: write
       actions: read
       id-token: write
@@ -28,13 +36,13 @@ jobs:
       - name: Configurer Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Étape 3 : Se connecter au GitHub Docker Registry
-      - name: Se connecter au GitHub Docker Registry
+      # Étape 3 : Connexion à GitHub Container Registry (GHCR)
+      - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
-          registry: ghcr.io # Registre de conteneurs de GitHub
-          username: ${{ github.actor }} # On utilise le nom de l'utilisateur GitHub qui a déclenché le workflow
-          password: ${{ secrets.GITHUB_TOKEN }} # On utilise le token secret pour se connecter au registre GitHub Packages(token généré dans GitHub)
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       # Étape 4 : Construire le conteneur et le publier sur le registre GitHub Packages
       - name: Construire le conteneur et le publier sur le registre GitHub Packages
@@ -42,10 +50,100 @@ jobs:
         with:
           context: . # Utilise le répertoire courant pour construire l'image
           push: true
-          tags: ghcr.io/luffy0xcyber/ue19-lab-05/my-app:latest # identifiant de l'image Docker taguée
+          tags: ghcr.io/luffy0xcyber/ue19-lab-05/my-app:latest
 
       # Étape 5 : Scanner l'image Docker pour les vulnerabilites
-      - name: Scanner l'image Docker pour les vulnerabilites
+      - name: Scanne image Docker avec Aqua Trivi
         uses: aquasecurity/trivy-action@master # On utilise l'action "trivy" pour scanner l'image Docker
         with:
           image-ref: ghcr.io/luffy0xcyber/ue19-lab-05/my-app:latest
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Nom du workflow, ici j'ai mis le nom en fonction de ce qu'on a au labo à la question3
+#name: Construire le conteneur et le publier sur le registre GitHub Packages
+#
+## Déclencheur du workflow, ici on veut que le workflow soit déclenché à chaque fois qu'on push sur la branche main
+#on:
+#  push:
+#    branches:
+#      - main
+#
+## Les jobs du workflow, ici on a un job qui s'appelle "build"
+#jobs:
+#  build:
+#    # Environnement d'exécution : machine virtuelle Linux
+#    runs-on: ubuntu-latest
+#
+#    permissions:
+#      contents: read
+#      packages: write
+#      actions: read
+#      id-token: write
+#
+#    steps:
+#      # Étape 1 : Récupère le code source du dépôt
+#      - name: Checkout code
+#        uses: actions/checkout@v3
+#
+#      # Étape 2 : Configure Docker Buildx pour des fonctionnalités avancées de build
+#      - name: Configurer Docker Buildx
+#        uses: docker/setup-buildx-action@v3
+#
+#      # Étape 3 : Se connecter au GitHub Docker Registry
+#      - name: Se connecter au GitHub Docker Registry
+#        uses: docker/login-action@v2
+#        with:
+#          registry: ghcr.io # Registre de conteneurs de GitHub
+#          username: ${{ github.actor }} # On utilise le nom de l'utilisateur GitHub qui a déclenché le workflow
+#          password: ${{ secrets.GITHUB_TOKEN }} # On utilise le token secret pour se connecter au registre GitHub Packages
+#
+#      # Étape 4 : Construire le conteneur et le publier sur le registre GitHub Packages
+#      - name: Construire le conteneur et le publier sur le registre GitHub Packages
+#        uses: docker/build-push-action@v5
+#        with:
+#          context: . # Utilise le répertoire courant pour construire l'image
+#          push: true
+#          tags: ghcr.io/luffy0xcyber/ue19-lab-05/my-app:latest # identifiant de l'image Docker taguée
+#
+#      # Étape 5 : Scanner l'image Docker pour les vulnerabilites
+#      - name: Scanner l'image Docker pour les vulnerabilites
+#        uses: aquasecurity/trivy-action@master # On utilise l'action "trivy" pour scanner l'image Docker
+#        with:
+#          image-ref: ghcr.io/luffy0xcyber/ue19-lab-05/my-app:latest
