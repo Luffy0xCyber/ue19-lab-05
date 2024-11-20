@@ -35,7 +35,7 @@ jobs:
         with:
           registry: ghcr.io # Registre de conteneurs de GitHub
           username: ${{ github.actor }} # On utilise le nom de l'utilisateur GitHub qui a déclenché le workflow
-          password: ${{ secrets.GITHUB_TOKEN }} # Authentifier avec un jeton d'accès GitHub generé par GitHub Actions automatiquement(cf. https://docs.github.com/fr/actions/security-for-github-actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-github_token
+          password: ${{ secrets.GITHUB_TOKEN }} # Authentifier avec un jeton d'accès GitHub generé par GitHub Actions automatiquement(cf. https://docs.github.com/fr/actions/security-for-github-actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-github_token)
 
       # Étape 4 : Construire le conteneur et le publier sur le registre GitHub Packages
       - name: Construire le conteneur et le publier sur le registre GitHub Packages
@@ -44,3 +44,10 @@ jobs:
           context: . # Utilise le répertoire courant pour construire l'image
           push: true
           tags: ghcr.io/luffy0xcyber/ue19-lab-05 # identifiant de l'image Docker taguée avec le mon nom d'user(en minuscule) et le nom du repo
+
+      # Étape 5 : Scanner l'image Docker pour les vulnerabilites
+      - name: Scanner l'image Docker pour les vulnerabilites
+        uses: aquasecurity/trivy-action@master # On utilise l'action "trivy" pour scanner l'image Docker
+        with:
+          image-ref: ghcr.io/luffy0xcyber/ue19-lab-05/my-app:latest
+
