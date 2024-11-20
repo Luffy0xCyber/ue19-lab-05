@@ -13,6 +13,12 @@ jobs:
     # Environnement d'exécution : machine virtuelle Linux
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      packages: write
+      actions: read
+      id-token: write
+
     steps:
       # Étape 1 : Récupère le code source du dépôt
       - name: Checkout code
@@ -28,7 +34,7 @@ jobs:
         with:
           registry: ghcr.io # Registre de conteneurs de GitHub
           username: ${{ github.actor }} # On utilise le nom de l'utilisateur GitHub qui a déclenché le workflow
-          password: ${{ secrets.SECRET_TOKEN }} # On utilise le token secret pour se connecter au registre GitHub Packages(token généré dans GitHub)
+          password: ${{ secrets.GITHUB_TOKEN }} # On utilise le token secret pour se connecter au registre GitHub Packages(token généré dans GitHub)
 
       # Étape 4 : Construire le conteneur et le publier sur le registre GitHub Packages
       - name: Construire le conteneur et le publier sur le registre GitHub Packages
