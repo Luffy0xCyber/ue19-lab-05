@@ -45,9 +45,9 @@ jobs:
           push: true
           tags: ghcr.io/luffy0xcyber/ue19-lab-05 # identifiant de l'image Docker taguée avec le mon nom d'user(en minuscule) et le nom du repo
 
-      # Étape 5 : Scanner l'image Docker pour les vulnerabilites
+      # Étape 5 : Scanner l'image Docker pour les vulnerabilites (cf. https://trivy.dev/v0.17.2/)
       - name: Scanner l'image Docker pour les vulnerabilites
         uses: aquasecurity/trivy-action@master # On utilise l'action "trivy" pour scanner l'image Docker
         with:
-          image-ref: ghcr.io/luffy0xcyber/ue19-lab-05/my-app:latest
+          image-ref: ghcr.io/luffy0xcyber/ue19-lab-05
 
