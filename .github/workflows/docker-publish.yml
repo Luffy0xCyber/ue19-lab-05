@@ -34,7 +34,7 @@ jobs:
 
       # Étape 2 : Configure Docker Buildx pour des fonctionnalités avancées de build
       - name: Configurer Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v2
 
       # Étape 3 : Connexion à GitHub Container Registry (GHCR)
       - name: Log in to Docker Hub
