@@ -43,9 +43,8 @@ Une fois l'application en cours d'exécution, elle récupérera et affichera des
 - Auteur(s)
 - Année de publication
 - Éditeur(s)
-- Sujets
 
-L'application affichera les détails des 10 premiers livres trouvés.
+**L'application affichera les détails des 10 premiers livres trouvés, triés par date de publication en ordre décroissant.**
 
 ## Déploiement sur Digital Ocean
 
