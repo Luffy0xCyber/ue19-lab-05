@@ -1,64 +1,83 @@
 import requests
 
+# Constantes
+
+NOMBRE_LIVRES = 10 # Nombre de livres à afficher, la valeur peut être modifiée
+
+# URL de l'API OpenLibrary
+URL = "https://openlibrary.org/search.json?q=cybersecurity"
+
 def recuperer_donnees_livres(api_url):
     """
-    Cette fonction récupère les données des livres à partir de l'API OpenLibrary.
+    Récupère les données des livres à partir de l'API OpenLibrary
+
     :param api_url: URL de l'API
     :type api_url: str
     :return: liste des livres sinon une liste vide
     :rtype: list
     """
-    reponse = requests.get(api_url)
-
-    if reponse.status_code == 200:
+    try:
+        reponse = requests.get(api_url)
+        reponse.raise_for_status()  # Lève une exception en cas d'erreur HTTP par exemple 404, 500 ...
         return reponse.json().get("docs", [])
-    else:
-        print(f"Erreur : {reponse.status_code}")
+    except requests.RequestException as e:
+        print(f"Erreur lors de la récupération des données : {e}")
         return []
 
 
 def trier_livres_par_annee(liste_livres):
     """
-    Cette fonction trie les livres par année de publication.
+    Trie les livres par année de publication en ordre décroissant
+
     :param liste_livres: liste des livres
     :type liste_livres: list
     :return: liste des livres triés
     :rtype: list
     """
-    return sorted(liste_livres, key=lambda x: x.get("first_publish_year", float("inf")))
+    return sorted(liste_livres, key=lambda x: x.get("first_publish_year", float("-inf")), reverse=True)
 
 
 def afficher_info_livre(livre_detail):
     """
-    Cette fonction affiche les informations d'un livre
+    Affiche les informations d'un livre de manière lisible
+
     :param livre_detail: détails du livre
     :type livre_detail: dict
     """
-    # On récupère le titre, mais si on ne le trouve pas, on met "Titre inconnu"
-    # On fait de même pour auteur, année, éditeur et sujets
+    # Récupération des informations
     titre = livre_detail.get("title", "Titre inconnu")
-    auteur = ", ".join(livre_detail.get("author_name", ["Auteur inconnu"]))
+    auteurs = livre_detail.get("author_name", ["Auteur inconnu"])
     annee = livre_detail.get("first_publish_year", "Année inconnue")
-    editeur = ", ".join(livre_detail.get("publisher", ["Éditeur inconnu"]))
-    sujets = ", ".join(livre_detail.get("subject", ["Aucun sujet disponible"]))
+    editeurs = ", ".join(livre_detail.get("publisher", ["Éditeur inconnu"]))
 
-    # Affichage des informations
+    # Affichage
+    print("*" * 70)
     print(f"Titre : {titre}")
-    print(f"Auteur(s) : {auteur}")
+    print(f"Auteur(s) : {', '.join(auteurs)}")
     print(f"Année de publication : {annee}")
-    print(f"Éditeur(s) : {editeur}")
-    print(f"Sujets : {sujets}\n")
+    print(f"Éditeur(s) : {editeurs}")
+    print("*" * 70)
+    print()
+
+# Fonction principale !
+def main():
+    print("\nRecherche de livres sur la cybersécurité en cours... ")
+
+    # Récupération et tri des livres
+    livres = recuperer_donnees_livres(URL)
+    livres_tries = trier_livres_par_annee(livres)
+
+    # Affichage des livres
+    if livres_tries:
+        print("\n" + "*" * 70)
+        print("les 10 livres les plus récents ordonnés par date de publication".center(70))
+        print("*" * 70)
+        print()
+        for livre in livres_tries[:NOMBRE_LIVRES]:
+            afficher_info_livre(livre)
+    else:
+        print("Aucun livre n'a pu être récupéré.")
 
 
-# URL de l'API OpenLibrary
-url = "https://openlibrary.org/search.json?q=cybersecurity"
-
-# Recupération des données des livres (appel à la fonction recuperer_donnees_livres)
-livres = recuperer_donnees_livres(url)
-
-# Tri des livres par année (appel à la fonction trier_livres_par_annee)
-livres_tries = trier_livres_par_annee(livres)
-
-# Affichage des informations des 10 premiers livres
-for livre in livres_tries[:10]:
-    afficher_info_livre(livre) # on appelle la fonction afficher_info_livre pour chaque livre
+if __name__ == "__main__":
+    main()
