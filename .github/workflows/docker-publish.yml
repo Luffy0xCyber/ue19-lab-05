@@ -31,7 +31,7 @@ jobs:
 
       # Étape 3 : Se connecter au GitHub Docker Registry
       - name: Se connecter au GitHub Docker Registry
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io # Registre de conteneurs de GitHub
           username: ${{ github.actor }} # On utilise le nom de l'utilisateur GitHub qui a déclenché le workflow
